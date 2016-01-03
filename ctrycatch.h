@@ -6,21 +6,41 @@
 #include <stdbool.h>
 
 // Some macro magic
+#ifdef CAT
+#undef CAT
+#endif
 #define CAT(a, ...) PRIMITIVE_CAT(a, __VA_ARGS__)
+#ifdef PRIMITIVE_CAT
+#undef PRIMITIVE_CAT
+#endif
 #define PRIMITIVE_CAT(a, ...) a ## __VA_ARGS__
 
-//#define CTRYCATCH_LINESPECIFIC_NAME(X) CAT(__ctrycatch_, CAT(__LINE__, CAT(__, X)))
+#ifdef CTRYCATCH_NAME
+#undef CTRYCATCH_NAME
+#endif
 #define CTRYCATCH_NAME(X) CAT(__ctrycatch_, X)
 
 // New block arguments
+#ifdef try
+#undef try
+#endif
 #define try \
     if(!(CTRYCATCH_NAME(exception_type) = setjmp(CTRYCATCH_NAME(exception_env))))
 
+#ifdef catch
+#undef catch
+#endif
 #define catch(X) \
     else if((X +0) == 0 || CTRYCATCH_NAME(exception_type) == (X +0))
 
+#ifdef finally
+#undef finally
+#endif
 #define finally
 
+#ifdef throw
+#undef throw
+#endif
 #define throw(X,...) \
     CTRYCATCH_NAME(exception_message) = (__VA_ARGS__  +0), longjmp(CTRYCATCH_NAME(exception_env), (X))
 
@@ -33,213 +53,21 @@ extern CTRYCATCH_NAME(exception_types) CTRYCATCH_NAME(exception_type);
 extern char *CTRYCATCH_NAME(exception_message);
 
 // Helper functions
+#ifdef __ctrycatch_exception_message_exists
+#undef __ctrycatch_exception_message_exists
+#endif
 #define __ctrycatch_exception_message_exists (bool)CTRYCATCH_NAME(exception_message)
 
 // Exception types
-// Most of them are from C#. Modify this list to satisfy your own need.
+#ifdef Exception
+#undef Exception
+#endif
+
 enum exception_type {
     Exception, // Caution: 0 **IS** defined as "no error" to make it work. DO NOT modofy this line. 
-    AccessViolationException,
-    AppDomainUnloadedException,
-    ApplicationException,
-    ArgumentException,
-    ArgumentNullException,
-    ArgumentOutOfRangeException,
-    ArithmeticException,
-    ArrayTypeMismatchException,
-    BadImageFormatException,
-    CannotUnloadAppDomainException,
-    ContextMarshalException,
-    DataMisalignedException,
-    DivideByZeroException,
-    DllNotFoundException,
-    DuplicateWaitObjectException,
-    EntryPointNotFoundException,
-    ExecutionEngineException,
-    FieldAccessException,
-    FormatException,
-    IndexOutOfRangeException,
-    InsufficientMemoryException,
-    InvalidCastException,
-    InvalidOperationException,
-    InvalidProgramException,
-    MemberAccessException,
-    MethodAccessException,
-    MissingFieldException,
-    MissingMemberException,
-    MissingMethodException,
-    MulticastNotSupportedException,
-    NotFiniteNumberException,
-    NotImplementedException,
-    NotSupportedException,
-    NullReferenceException,
-    ObjectDisposedException,
-    OperationCanceledException,
-    OutOfMemoryException,
-    OverflowException,
-    PlatformNotSupportedException,
-    RankException,
-    StackOverflowException,
-    SystemException,
-    TimeoutException,
-    TypeInitializationException,
-    TypeLoadException,
-    TypeUnloadedException,
-    UnauthorizedAccessException,
-    KeyNotFoundException,
-    DirectoryNotFoundException,
-    DriveNotFoundException,
-    EndOfStreamException,
-    FileLoadException,
-    FileNotFoundException,
-    IOException,
-    PathTooLongException,
-    IsolatedStorageException,
-    AmbiguousMatchException,
-    CustomAttributeFormatException,
-    InvalidFilterCriteriaException,
-    MetadataException,
-    ReflectionTypeLoadException,
-    TargetException,
-    TargetInvocationException,
-    TargetParameterCountException,
-    MissingManifestResourceException,
-    MissingSatelliteAssemblyException,
-    RuntimeWrappedException,
-    COMException,
-    ExternalException,
-    InvalidComObjectException,
-    InvalidOleVariantTypeException,
-    MarshalDirectiveException,
-    SafeArrayRankMismatchException,
-    SafeArrayTypeMismatchException,
-    SEHException,
-    RemotingException,
-    RemotingTimeoutException,
-    ServerException,
-    SerializationException,
-    HostProtectionException,
-    SecurityException,
-    VerificationException,
-    XmlSyntaxException,
-    PrivilegeNotHeldException,
-    CryptographicException,
-    CryptographicUnexpectedOperationException,
-    PolicyException,
-    IdentityNotMappedException,
-    DecoderFallbackException,
-    EncoderFallbackException,
-    AbandonedMutexException,
-    SynchronizationLockException,
-    ThreadAbortException,
-    ThreadInterruptedException,
-    ThreadStartException,
-    ThreadStateException,
-    WaitHandleCannotBeOpenedException,
-    ContractPlusAssertionException,
-    ContractPlusAssumptionException,
-    ContractPlusInvariantException,
-    ContractPlusPostconditionException,
-    ContractPlusPreconditionException,
-    AddInBaseInAddInFolderException,
-    AddInSegmentDirectoryNotFoundException,
-    InvalidPipelineStoreException,
-    GenericsNotImplementedException,
-    ConfigurationErrorsException,
-    ProviderException,
-    InstallException,
-    ModuleLoadException,
-    ModuleLoadExceptionHandlerException,
-    InvalidUdtException,
-    ConstraintException,
-    DataException,
-    DBConcurrencyException,
-    DeletedRowInaccessibleException,
-    DuplicateNameException,
-    EvaluateException,
-    InRowChangingEventException,
-    InvalidConstraintException,
-    InvalidExpressionException,
-    MissingPrimaryKeyException,
-    NoNullAllowedException,
-    OperationAbortedException,
-    ReadOnlyException,
-    RowNotInTableException,
-    StrongTypingException,
-    SyntaxErrorException,
-    TypedDataSetGeneratorException,
-    VersionNotFoundException,
-    DbException,
-    OdbcException,
-    OleDbException,
-    SqlException,
-    SqlAlreadyFilledException,
-    SqlNotFilledException,
-    SqlNullValueException,
-    SqlTruncateException,
-    SqlTypeException,
-    InvalidPrinterException,
-    DirectoryServicesCOMException,
-    ActiveDirectoryObjectExistsException,
-    ActiveDirectoryObjectNotFoundException,
-    ActiveDirectoryOperationException,
-    ActiveDirectoryServerDownException,
-    ForestTrustCollisionException,
-    SyncFromAllServersOperationException,
-    ManagementException,
-    MessageQueueException,
-    HttpCompileException,
-    HttpException,
-    HttpParseException,
-    HttpRequestValidationException,
-    HttpUnhandledException,
-    DatabaseNotEnabledForNotificationException,
-    TableNotEnabledForNotificationException,
-    HostingEnvironmentException,
-    SqlExecutionException,
-    MembershipCreateUserException,
-    MembershipPasswordException,
-    ViewStateException,
-    AxHostPlusInvalidActiveXStateException,
-    CodeDomSerializerException,
-    DataSourceGeneratorException,
-    DataSourceSerializationException,
-    InternalException,
-    NameValidationException,
-    XmlException,
-    UpaException,
-    XmlSchemaException,
-    XmlSchemaInferenceException,
-    XmlSchemaValidationException,
-    XPathException,
-    XsltCompileException,
-    XsltException,
-    UriFormatException,
-    InvalidAsynchronousStateException,
-    InvalidEnumArgumentException,
-    LicenseException,
-    WarningException,
-    Win32Exception,
-    CheckoutException,
-    ConfigurationException,
-    SettingsPropertyIsReadOnlyException,
-    SettingsPropertyNotFoundException,
-    SettingsPropertyWrongTypeException,
-    InternalBufferOverflowException,
-    InvalidDataException,
-    CookieException,
-    HttpListenerException,
-    ProtocolViolationException,
-    WebException,
-    SmtpException,
-    SmtpFailedRecipientException,
-    SmtpFailedRecipientsException,
-    NetworkInformationException,
-    PingException,
-    SocketException,
-    AuthenticationException,
-    InvalidCredentialException,
-    SemaphoreFullException,
+#include "ctrycatch_custom_exceptions.h"
 };
+
+#define Exception 0
 
 #endif /* ctrycatch_h */

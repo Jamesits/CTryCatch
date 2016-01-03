@@ -28,6 +28,7 @@
 		1A8307CC1C39649600A2F204 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		1A8307D31C3964A900A2F204 /* ctrycatch.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = ctrycatch.c; path = ../../../ctrycatch.c; sourceTree = "<group>"; };
 		1A8307D41C3964A900A2F204 /* ctrycatch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ctrycatch.h; path = ../../../ctrycatch.h; sourceTree = "<group>"; };
+		1A8307D61C39714900A2F204 /* ctrycatch_custom_exceptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ctrycatch_custom_exceptions.h; path = ../../../ctrycatch_custom_exceptions.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,6 +62,7 @@
 			isa = PBXGroup;
 			children = (
 				1A8307D31C3964A900A2F204 /* ctrycatch.c */,
+				1A8307D61C39714900A2F204 /* ctrycatch_custom_exceptions.h */,
 				1A8307D41C3964A900A2F204 /* ctrycatch.h */,
 				1A8307CC1C39649600A2F204 /* main.c */,
 			);

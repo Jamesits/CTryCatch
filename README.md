@@ -2,13 +2,54 @@
 
 A library which enables you to write try/catch statements in pure C. 
 
-Experimental project. Updates may broke forward compatibility. Use with caution. 
+Notes: 
+
+ * **Experimental project**. Updates may broke forward compatibility. Use with caution. 
+ * Not sure if it is thread safety.
 
 ## Usage
 
 To use CTryCatch, simply include its header: `#include "ctrycatch.h"`. 
 
-## Differences from C++ try/catch
+Definitions: 
+
+ * `try` starts a try block.
+ * `catch(ExceptionType)` catches a specific error.
+ * `catch()` catches any error; put it after other `catch`es if there are any. 
+ * `finally` starts a finally block. 
+ * `throw(ExceptionType)` throws an exception. 
+ * `throw(ExceptionType, "message")` throws an exception with a message. 
+ * `bool __ctrycatch_exception_message_exists;` is set to true if there is a message with exception. 
+ * `char *__ctrycatch_exception_message` contains the message (if there is any) or NULL if not. 
+ 
+Notes 
+
+ * Inheritance is not implemented due to the limitations of C. 
+ * The generic `catch()` should be put after other `catch`es if there are any. Otherwise more than one catch blocks may be executed. 
+ * `catch()` is exactly the same to `catch(Exception)`.
+ 
+## Add/Change Exception Types
+
+Edit `ctrycatch_custom_exceptions.h`: 
+
+```C
+AccessViolationException,
+AppDomainUnloadedException,
+ApplicationException,
+ArgumentException,
+ArgumentNullException,
+ArgumentOutOfRangeException,
+ArithmeticException,
+// ...
+SomeCustomException,
+AnotherCustomException,
+```
+
+## Example
+
+[Here](https://github.com/Jamesits/CTryCatch/blob/master/tests/CTryCatchTest/CTryCatchTest/main.c) is an simple C program which demonstrates the usage of CTryCatch. 
+
+### Comparison with C++ try/catch
 
 ```C
 // CTryCatch
@@ -21,7 +62,7 @@ try {
 } catch(ArgumentsException) {
 	// error handling
 } catch() {
-	// error handling
+	// error handling for default case
 } finally {
 	// cleanup
 }
@@ -41,51 +82,6 @@ try {
 	// error handling
 }
 // C++ doesn't support finally
-```
-
-Other definitions: 
-
- * `bool __ctrycatch_exception_message_exists;` is set to true if there is a message with exception. 
- * `char *__ctrycatch_exception_message` contains the message (if there is any) or NULL if not. 
-
-## Example
-
-Here is an simple C program which demonstrates the usage of CTryCatch. 
-
-```C
-#include <stdio.h>
-#include "ctrycatch.h"
-
-void throwArgumentsException(void) {
-    printf("second\n");
-    throw(ArgumentsException, "ArgumentsException");
-}
-
-int main() {
-
-    puts("Test1: try/catch/finally, function, with message");
-    try {
-        throwArgumentsException();
-    } catch(ArgumentsException) {
-        printf("ArgumentsException\n");
-        if (exception_message) printf("message: %s\n", exception_message);
-    } finally {
-        printf("finally\n");
-    }
-    
-    puts("Test2: try/catch, default catch block, without message");
-    try {
-        throw(NullPointerException);
-    } catch(ArgumentsException) {
-        printf("ArgumentsException\n");
-        if (exception_message) printf("message: %s\n", exception_message);
-    } catch() {
-        printf("default\n");
-        if (exception_message) printf("message: %s\n", exception_message);
-    }
-    
-    return 0;
-}
 ```
 
 ## Author
