@@ -3,14 +3,42 @@
 #define ctrycatch_h
 
 #include <setjmp.h>
+#include <stdbool.h>
 
-#define try           if(!(exception_type=setjmp(exception_env)))
-#define catch(X)      else if((X +0)==0||exception_type==(X +0))
+// Some macro magic
+#define CAT(a, ...) PRIMITIVE_CAT(a, __VA_ARGS__)
+#define PRIMITIVE_CAT(a, ...) a ## __VA_ARGS__
+
+//#define CTRYCATCH_LINESPECIFIC_NAME(X) CAT(__ctrycatch_, CAT(__LINE__, CAT(__, X)))
+#define CTRYCATCH_NAME(X) CAT(__ctrycatch_, X)
+
+// New block arguments
+#define try \
+    if(!(CTRYCATCH_NAME(exception_type) = setjmp(CTRYCATCH_NAME(exception_env))))
+
+#define catch(X) \
+    else if((X +0) == 0 || CTRYCATCH_NAME(exception_type) == (X +0))
+
 #define finally
-#define throw(X,...)  exception_message=(__VA_ARGS__  +0),longjmp(exception_env,(X))
 
+#define throw(X,...) \
+    CTRYCATCH_NAME(exception_message) = (__VA_ARGS__  +0), longjmp(CTRYCATCH_NAME(exception_env), (X))
+
+// Exception type
+typedef int CTRYCATCH_NAME(exception_types);
+
+// Global variables to store exception details
+extern jmp_buf CTRYCATCH_NAME(exception_env);
+extern CTRYCATCH_NAME(exception_types) CTRYCATCH_NAME(exception_type);
+extern char *CTRYCATCH_NAME(exception_message);
+
+// Helper functions
+#define __ctrycatch_exception_message_exists (bool)CTRYCATCH_NAME(exception_message)
+
+// Exception types
+// Most of them are from C#. Modify this list to satisfy your own need.
 enum exception_type {
-    Exception, // Caution: 0 **IS** defined as "no error" to make it work.
+    Exception, // Caution: 0 **IS** defined as "no error" to make it work. DO NOT modofy this line. 
     AccessViolationException,
     AppDomainUnloadedException,
     ApplicationException,
@@ -86,7 +114,6 @@ enum exception_type {
     SafeArrayRankMismatchException,
     SafeArrayTypeMismatchException,
     SEHException,
-    RepresentsStructuredExceptionHandler(SEH)errors.,
     RemotingException,
     RemotingTimeoutException,
     ServerException,
@@ -109,11 +136,11 @@ enum exception_type {
     ThreadStartException,
     ThreadStateException,
     WaitHandleCannotBeOpenedException,
-    Contract+AssertionException,
-    Contract+AssumptionException,
-    Contract+InvariantException,
-    Contract+PostconditionException,
-    Contract+PreconditionException,
+    ContractPlusAssertionException,
+    ContractPlusAssumptionException,
+    ContractPlusInvariantException,
+    ContractPlusPostconditionException,
+    ContractPlusPreconditionException,
     AddInBaseInAddInFolderException,
     AddInSegmentDirectoryNotFoundException,
     InvalidPipelineStoreException,
@@ -161,7 +188,6 @@ enum exception_type {
     SyncFromAllServersOperationException,
     ManagementException,
     MessageQueueException,
-    TimeoutException,
     HttpCompileException,
     HttpException,
     HttpParseException,
@@ -174,13 +200,12 @@ enum exception_type {
     MembershipCreateUserException,
     MembershipPasswordException,
     ViewStateException,
-    AxHost+InvalidActiveXStateException,
+    AxHostPlusInvalidActiveXStateException,
     CodeDomSerializerException,
     DataSourceGeneratorException,
     DataSourceSerializationException,
     InternalException,
     NameValidationException,
-    TypedDataSetGeneratorException,
     XmlException,
     UpaException,
     XmlSchemaException,
@@ -204,7 +229,6 @@ enum exception_type {
     InvalidDataException,
     CookieException,
     HttpListenerException,
-    InternalException,
     ProtocolViolationException,
     WebException,
     SmtpException,
@@ -218,9 +242,4 @@ enum exception_type {
     SemaphoreFullException,
 };
 
-typedef int exception_types;
-extern jmp_buf exception_env;
-extern exception_types exception_type;
-extern char *exception_message;
-
-#endif /* error_handler_h */
+#endif /* ctrycatch_h */

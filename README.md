@@ -43,6 +43,10 @@ try {
 // C++ doesn't support finally
 ```
 
+Other definitions: 
+
+ * `bool __ctrycatch_exception_message_exists;` is set to true if there is a message with exception. 
+ * `char *__ctrycatch_exception_message` contains the message (if there is any) or NULL if not. 
 
 ## Example
 

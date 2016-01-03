@@ -1,5 +1,6 @@
-#include "error_handler.h"
+#include "ctrycatch.h"
 
-jmp_buf exception_env;
-exception_types exception_type;
-char *exception_message;
+// Global variables to store exception details
+jmp_buf CTRYCATCH_NAME(exception_env);
+CTRYCATCH_NAME(exception_types) CTRYCATCH_NAME(exception_type);
+char *CTRYCATCH_NAME(exception_message);
