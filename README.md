@@ -7,6 +7,7 @@ Notes:
  * Compatible with C99. Support of older C standards are not guaranteed.
  * **Experimental project**. Updates may broke backward compatibility. Use with caution. 
  * Not sure if it is thread safety.
+ * WARNING: you might see a lot errors if you break its grammer. 
 
 ## Usage
 
@@ -25,7 +26,8 @@ Definitions:
  
 Notes 
 
- * Inheritance is not implemented due to the limitations of C. 
+ * `ctrycatch.c` needs to be compiled and linked to your program. 
+ * Full inheritance support is not implemented due to the limitations of C. However, any exception type is a "subclass" of `Exception`.
  * The generic `catch()` should be put after other `catch`es if there are any. Otherwise more than one catch blocks may be executed. 
  * `catch()` is exactly the same to `catch(Exception)`.
  
