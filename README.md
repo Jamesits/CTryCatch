@@ -39,9 +39,8 @@ try {
 	// error handling
 } catch {
 	// error handling
-} finally {
-	// cleanup
 }
+// C++ doesn't support finally
 ```
 
 
