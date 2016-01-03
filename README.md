@@ -29,8 +29,9 @@ Notes
  * `ctrycatch.c` needs to be compiled and linked to your program. 
  * Full inheritance support is not implemented due to the limitations of C. However, any exception type is a "subclass" of `Exception`.
  * The generic `catch()` should be put after other `catch`es if there are any. Otherwise more than one catch blocks may be executed. 
- * `catch()` is exactly the same to `catch(Exception)`.
- 
+ * `catch()` is exactly the same as `catch(Exception)`.
+ * No good support for `throw`ing inside catch block or nested try/catch structure currently. This can be solved by a global `jmp_env` stack. *Help needed.*
+  
 ## Add/Change Exception Types
 
 Edit `ctrycatch_custom_exceptions.h`: 
