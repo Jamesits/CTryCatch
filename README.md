@@ -6,18 +6,18 @@ Notes:
 
  * Compatible with C99. Support of older C standards are not guaranteed.
  * **Experimental project**. Updates may broke backward compatibility. Use with caution. 
- * Not sure if it is thread safety.
- * WARNING: you might see a lot errors if you break its grammer. 
+ * Not sure if it is thread safety. See: [issues/2](https://github.com/Jamesits/CTryCatch/issues/2)
+ * WARNING: you might see a lot of messy errors if you break its grammer. See: [issues/3](https://github.com/Jamesits/CTryCatch/issues/3)
 
 ## Usage
 
-To use CTryCatch, simply include its header: `#include "ctrycatch.h"`. 
+To use CTryCatch, simply include its header in your program: `#include "ctrycatch.h"`. 
 
 Definitions: 
 
  * `try` starts a try block.
  * `catch(ExceptionType)` catches a specific error.
- * `catch()` or `catch(Exception)` catches any error; put it after other `catch`es if there are any. 
+ * `catch()` or `catch(Exception)` catches any error and executes the corresponding catch block; put it after other `catch`es if there are any. 
  * `finally` starts a finally block. 
  * `throw(ExceptionType)` throws an exception. 
  * `throw(ExceptionType, "message")` throws an exception with a message. 
@@ -30,11 +30,12 @@ Notes
  * Full inheritance support is not implemented due to the limitations of C. However, any exception type is a "subclass" of `Exception`.
  * The generic `catch()` should be put after other `catch`es if there are any. Otherwise more than one catch blocks may be executed. 
  * `catch()` is exactly the same as `catch(Exception)`.
- * No good support for `throw`ing inside catch block or nested try/catch structure currently. This can be solved by a global `jmp_env` stack. *Help needed.*
+ * No good support for `throw`ing inside catch block or nested try/catch structure currently. *Help wanted.* See: [issues/1](https://github.com/Jamesits/CTryCatch/issues/1)
+ * `__ctrycatch_exception_message` may bring memory leaks. See: [issues/4](https://github.com/Jamesits/CTryCatch/issues/4)
   
 ## Add/Change Exception Types
 
-Edit `ctrycatch_custom_exceptions.h`: 
+Edit `ctrycatch_custom_exceptions.h` and add/modify that list: 
 
 ```C
 AccessViolationException,
