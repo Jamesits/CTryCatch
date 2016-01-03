@@ -4,7 +4,7 @@ A library which enables you to write try/catch statements in pure C.
 
 Notes: 
 
- * **Experimental project**. Updates may broke forward compatibility. Use with caution. 
+ * **Experimental project**. Updates may broke backward compatibility. Use with caution. 
  * Not sure if it is thread safety.
 
 ## Usage
