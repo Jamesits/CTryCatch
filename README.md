@@ -35,7 +35,7 @@ Notes
   
 ## Add/Change Exception Types
 
-Edit `ctrycatch_custom_exceptions.h` and add/modify that list: 
+Edit `ctrycatch_exception_types.conf` and add/modify that list: 
 
 ```C
 AccessViolationException,
