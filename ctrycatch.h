@@ -66,7 +66,7 @@ extern char *CTRYCATCH_NAME(exception_message);
 #endif
 
 enum exception_type {
-    Exception, // Caution: 0 **IS** defined as "no error" to make it work. DO NOT modofy this line. 
+    Exception, // Caution: 0 **IS** defined as "no error" to make it work. DO NOT modify this line. 
 #include "ctrycatch_exception_types.conf"
 };
 
